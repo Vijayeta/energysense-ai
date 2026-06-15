@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="12 8 395 100" width="395" height="100">
+  <defs>
+    <linearGradient id="greenPulseGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#2E7D32" />
+      <stop offset="50%" stop-color="#4CAF50" />
+      <stop offset="100%" stop-color="#69F0AE" />
+    </linearGradient>
+  </defs>
+
+  <!-- LOGO ICON (Data Bars) -->
+  <g transform="translate(20, 20)">
+    <rect x="10" y="45" width="12" height="35" rx="6" fill="#2E7D32" />
+    <rect x="28" y="25" width="12" height="55" rx="6" fill="#4CAF50" />
+    <rect x="46" y="5" width="12" height="75" rx="6" fill="url(#greenPulseGrad)" />
+    <rect x="64" y="35" width="12" height="45" rx="6" fill="#B9F6CA" />
+    <circle cx="52" cy="-5" r="5" fill="#00E676" />
+    <line x1="52" y1="-5" x2="52" y2="5" stroke="#00E676" stroke-width="2" stroke-dasharray="2,2" />
+  </g>
+
+  <!-- TYPOGRAPHY -->
+  <g transform="translate(115, 68)">
+    <text font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="34" fill="#0F172A" letter-spacing="-0.5">EnergySense</text>
+    <rect x="205" y="-28" width="45" height="34" rx="6" fill="#1B5E20" />
+    <text x="213" y="-4" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="20" fill="#FFFFFF">AI</text>
+    <text y="22" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="500" font-size="11" fill="#64748B" letter-spacing="3.5">TRANSFORMING DATA INTO SAVINGS</text>
+  </g>
+</svg>
