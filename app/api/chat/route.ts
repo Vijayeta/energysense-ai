@@ -1,6 +1,8 @@
 import { NextRequest } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { supabase } from '@/lib/supabase'
+import { embedText } from '@/lib/embeddings'
+import { retrieveKnowledge, RetrievedChunk } from '@/lib/knowledge'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
 
@@ -10,6 +12,19 @@ export async function POST(request: NextRequest) {
 
     if (!uploadId || !Array.isArray(messages)) {
       return Response.json({ error: 'Invalid request' }, { status: 400 })
+    }
+
+    // Extract latest user message for embedding
+    const latestUserMessage =
+      [...messages].reverse().find((m: { role: string }) => m.role === 'user')?.content ?? ''
+
+    // Retrieve relevant domain knowledge — gracefully degrade if unavailable
+    let knowledgeChunks: RetrievedChunk[] = []
+    try {
+      const queryEmbedding = await embedText(latestUserMessage)
+      knowledgeChunks = await retrieveKnowledge(queryEmbedding, 3)
+    } catch (ragErr) {
+      console.warn('[RAG] Knowledge retrieval failed, continuing without it:', ragErr)
     }
 
     const [uploadsResult, readingsResult, analysisResult] = await Promise.all([
@@ -34,20 +49,28 @@ export async function POST(request: NextRequest) {
       ? `\nKey AI findings:\n- Summary: ${analysis.summary}\n- Anomalies: ${JSON.stringify(analysis.anomalies)}\n- Recommendations: ${JSON.stringify(analysis.recommendations)}\n- Total savings potential: ₹${Number(analysis.savings_total).toLocaleString('en-IN')}`
       : ''
 
+    const knowledgeContext =
+      knowledgeChunks.length > 0
+        ? `\n\nRelevant domain knowledge (Indian energy standards & benchmarks):\n${knowledgeChunks
+            .map((c, i) => `[${i + 1}] (${c.category}) ${c.content}`)
+            .join('\n\n')}`
+        : ''
+
     const systemPrompt = `You are an expert energy consultant answering questions about a specific building's energy data. Be concise and specific — always refer to actual numbers from the data.
 
 ${buildingLine}
 
 Monthly energy data:
 ${dataTable}
-${analysisContext}
+${analysisContext}${knowledgeContext}
 
 Guidelines:
 - Answer in 2–4 sentences unless more detail is genuinely needed
 - Always cite specific months, kWh figures, or ₹ amounts from the data above
 - If asked for advice, give a practical action the facility manager can take this week
+- When domain knowledge above is relevant, reference specific standards (BEE benchmarks, tariff rates) to add credibility
 - If asked something unrelated to energy, politely redirect to the energy data
-- Do not make up numbers that aren't in the data`
+- Do not make up numbers that aren't in the data or the knowledge section above`
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
