@@ -63,7 +63,10 @@ export default function EnergyChat({ uploadId }: { uploadId: string }) {
         body: JSON.stringify({ uploadId, messages: updated }),
       })
       const data = await res.json()
-      setMessages([...updated, { role: 'assistant', content: data.reply ?? 'Sorry, something went wrong.' }])
+      const content = res.ok
+        ? (data.reply ?? 'Sorry, something went wrong.')
+        : (data.error ?? 'Sorry, something went wrong.')
+      setMessages([...updated, { role: 'assistant', content }])
     } catch {
       setMessages([...updated, { role: 'assistant', content: 'Connection error. Please try again.' }])
     } finally {
