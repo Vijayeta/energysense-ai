@@ -65,6 +65,9 @@ ${dataTable}
 ${analysisContext}${knowledgeContext}
 
 Guidelines:
+- Write in plain conversational prose — no markdown, no bullet points, no headers
+- Do not use #, *, or - characters for formatting
+- Use short paragraphs separated by a blank line when more than one point is needed
 - Answer in 2–4 sentences unless more detail is genuinely needed
 - Always cite specific months, kWh figures, or ₹ amounts from the data above
 - If asked for advice, give a practical action the facility manager can take this week

@@ -3,6 +3,16 @@
 import { useState, useRef, useEffect } from 'react'
 import { Send, Loader2, X, Bot, Zap } from 'lucide-react'
 
+function formatMessage(text: string): string {
+  return text
+    .replace(/^#{1,6}\s+/gm, '')        // strip # headers
+    .replace(/\*\*(.+?)\*\*/g, '$1')    // strip **bold**
+    .replace(/\*(.+?)\*/g, '$1')         // strip *italic*
+    .replace(/^[-–]\s+/gm, '')           // strip leading bullet dashes
+    .replace(/\n{3,}/g, '\n\n')          // collapse excess blank lines
+    .trim()
+}
+
 interface Message {
   role: 'user' | 'assistant'
   content: string
@@ -130,13 +140,13 @@ export default function EnergyChat({ uploadId }: { uploadId: string }) {
                 </div>
               )}
               <div
-                className={`max-w-[78%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed break-words ${
+                className={`max-w-[78%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed break-words whitespace-pre-wrap ${
                   msg.role === 'user'
                     ? 'bg-green-600 text-white rounded-br-none'
                     : 'bg-gray-100 text-gray-800 rounded-bl-none'
                 }`}
               >
-                {msg.content}
+                {msg.role === 'assistant' ? formatMessage(msg.content) : msg.content}
               </div>
             </div>
           ))}
