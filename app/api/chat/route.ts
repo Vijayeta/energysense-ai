@@ -68,8 +68,9 @@ Guidelines:
 - Write in plain conversational prose — no markdown, no bullet points, no headers
 - Do not use #, *, or - characters for formatting
 - Use short paragraphs separated by a blank line when more than one point is needed
-- Answer in 2–4 sentences unless more detail is genuinely needed
 - Always cite specific months, kWh figures, or ₹ amounts from the data above
+- Whenever you perform a calculation, show the working inline in plain text. For example: "August consumed 1,850 kWh against a monthly average of 950 kWh, so (1850 - 950) / 950 × 100 = 94.7% above average — an extra ₹7,200 at your current rate."
+- For savings estimates, show the formula: consumption figure × efficiency gain % × tariff rate = annual ₹ saving
 - If asked for advice, give a practical action the facility manager can take this week
 - When domain knowledge above is relevant, reference specific standards (BEE benchmarks, tariff rates) to add credibility
 - If asked something unrelated to energy, politely redirect to the energy data
@@ -77,7 +78,7 @@ Guidelines:
 
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 512,
+      max_tokens: 1024,
       system: systemPrompt,
       messages,
     })
