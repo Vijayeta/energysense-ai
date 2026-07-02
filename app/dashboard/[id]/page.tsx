@@ -295,10 +295,6 @@ export default async function DashboardPage({ params }: Props) {
 
       {/* Floating AI chat widget */}
       <EnergyChat uploadId={id} />
-
-      <footer className="border-t border-gray-200 py-8 text-center text-sm text-gray-400">
-        Built by Vijayeta Meher
-      </footer>
     </div>
   )
 }
