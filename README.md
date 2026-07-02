@@ -2,7 +2,6 @@
 
 AI-powered energy management platform for commercial buildings. Upload monthly energy data, get AI-generated anomaly detection, savings recommendations, and a conversational chat assistant grounded in Indian energy standards (BEE, ASHRAE, DISCOM tariffs).
 
-PM portfolio project by Vijayeta Meher.
 
 ## Features
 
